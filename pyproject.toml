@@ -7,12 +7,15 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
+jsonschema = "^4.23.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.4.0"
 flake8 = "^7.0.0"
 isort = "^5.13.2"
 pre-commit = "^3.7.0"
+mypy = "^1.13.0"
+types-jsonschema = "^4.23.0.20240813"
 
 [build-system]
 requires = ["poetry-core"]
@@ -32,3 +35,6 @@ extend-exclude = '__pycache__'
 
 [tool.isort]
 skip = '__pycache__'
+
+[tool.mypy]
+strict = true
