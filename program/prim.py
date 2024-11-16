@@ -13,24 +13,26 @@ from typing import List
 # Класс пользовательского исключения в случае, если неверно
 # введен номер года.
 class IllegalYearError(Exception):
-    def __init__(self, year, message="Illegal year number"):
+    def __init__(
+        self, year: int, message: str = "Illegal year number"
+    ) -> None:
         self.year = year
         self.message = message
         super(IllegalYearError, self).__init__(message)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.year} -> {self.message}"
 
 
 # Класс пользовательского исключения в случае, если введенная
 # команда является недопустимой.
 class UnknownCommandError(Exception):
-    def __init__(self, command, message="Unknown command"):
+    def __init__(self, command: str, message: str = "Unknown command") -> None:
         self.command = command
         self.message = message
         super(UnknownCommandError, self).__init__(message)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.command} -> {self.message}"
 
 
@@ -45,7 +47,7 @@ class Worker:
 class Staff:
     workers: List[Worker] = field(default_factory=lambda: [])
 
-    def add(self, name, post, year):
+    def add(self, name: str, post: str, year: int) -> None:
         # Получить текущую дату.
         today = date.today()
         if year < 0 or year > today.year:
@@ -53,7 +55,7 @@ class Staff:
         self.workers.append(Worker(name=name, post=post, year=year))
         self.workers.sort(key=lambda worker: worker.name)
 
-    def __str__(self):
+    def __str__(self) -> str:
         # Заголовок таблицы.
         table = []
         line = "+-{}-+-{}-+-{}-+-{}-+".format(
@@ -76,7 +78,7 @@ class Staff:
         table.append(line)
         return "\n".join(table)
 
-    def select(self, period):
+    def select(self, period: int) -> List[Worker]:
         # Получить текущую дату.
         today = date.today()
         result = []
@@ -85,7 +87,7 @@ class Staff:
                 result.append(worker)
         return result
 
-    def load(self, filename):
+    def load(self, filenamez: str) -> None:
         with open(filename, "r", encoding="utf8") as fin:
             xml = fin.read()
 
@@ -100,14 +102,14 @@ class Staff:
                 elif element.tag == "post":
                     post = element.text
                 elif element.tag == "year":
-                    year = int(element.text)
+                    year = int(element.text or 0)
 
                 if name is not None and post is not None and year is not None:
                     self.workers.append(
                         Worker(name=name, post=post, year=year)
                     )
 
-    def save(self, filename):
+    def save(self, filename: str) -> None:
         root = ET.Element("workers")
         for worker in self.workers:
             worker_element = ET.Element("worker")
@@ -155,7 +157,7 @@ if __name__ == "__main__":
                 # Разбить команду на части для выделения номера года.
                 parts = command.split(maxsplit=1)
                 # Запросить работников.
-                selected = staff.select(parts[1])
+                selected = staff.select(int(parts[1]))
                 # Вывести результаты запроса.
                 if selected:
                     for idx, worker in enumerate(selected, 1):
