@@ -1,0 +1,20 @@
+[
+    {
+        "__type__": "Route",
+        "start": "nevin",
+        "end": "armavir",
+        "number": 9
+    },
+    {
+        "__type__": "Route",
+        "start": "stav",
+        "end": "nevin",
+        "number": 15
+    },
+    {
+        "__type__": "Route",
+        "start": "atmavir",
+        "end": "stav",
+        "number": 68
+    }
+]

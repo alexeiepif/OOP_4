@@ -117,7 +117,7 @@ class Routes:
         """
         Выбрать маршруты с заданным пунктом отправления или прибытия.
         """
-        selected: List[Route] = field(default_factory=list)
+        selected: List[Route] = []
         for route in self.routes:
             if route.start == name_point or route.end == name_point:
                 selected.append(route)
@@ -129,7 +129,7 @@ class Routes:
         Сохранить все маршруты в файл JSON.
         """
         # Открыть файл с заданным именем для записи.
-        with file_path.open("w") as file_out:
+        with file_path.open("w", encoding="utf-8") as file_out:
             data_with_type = [
                 {"__type__": route.__class__.__name__, **asdict(route)}
                 for route in self.routes
@@ -161,7 +161,7 @@ class Routes:
             },
         }
         # Открыть файл с заданным именем и прочитать его содержимое.
-        with file_path.open("r") as file_in:
+        with file_path.open("r", encoding="utf-8") as file_in:
             data = json.load(file_in)  # Прочитать данные из файла
 
         validate(instance=data, schema=schema)
@@ -177,6 +177,7 @@ def main(command_line: str | None = None) -> None:
     logging.basicConfig(
         filename="app.log",
         filemode="a",
+        encoding="utf-8",
         format="%(asctime)s.%(msecs)03d - %(levelname)s - %(message)s",
         level=logging.INFO,
     )
@@ -235,7 +236,7 @@ def main(command_line: str | None = None) -> None:
     if args.home:
         filepath: Path = Path.home() / args.filename
     else:
-        filepath = Path(args.filename)
+        filepath = Path("json") / args.filename
 
     if os.path.exists(filepath):
         routes.load(filepath)
