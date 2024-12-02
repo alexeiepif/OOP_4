@@ -13,9 +13,7 @@ from typing import List
 # Класс пользовательского исключения в случае, если неверно
 # введен номер года.
 class IllegalYearError(Exception):
-    def __init__(
-        self, year: int, message: str = "Illegal year number"
-    ) -> None:
+    def __init__(self, year: int, message: str = "Illegal year number") -> None:
         self.year = year
         self.message = message
         super(IllegalYearError, self).__init__(message)
@@ -58,9 +56,7 @@ class Staff:
     def __str__(self) -> str:
         # Заголовок таблицы.
         table = []
-        line = "+-{}-+-{}-+-{}-+-{}-+".format(
-            "-" * 4, "-" * 30, "-" * 20, "-" * 8
-        )
+        line = "+-{}-+-{}-+-{}-+-{}-+".format("-" * 4, "-" * 30, "-" * 20, "-" * 8)
         table.append(line)
         table.append(
             "| {:^4} | {:^30} | {:^20} | {:^8} |".format(
@@ -87,7 +83,7 @@ class Staff:
                 result.append(worker)
         return result
 
-    def load(self, filenamez: str) -> None:
+    def load(self, filename: str) -> None:
         with open(filename, "r", encoding="utf8") as fin:
             xml = fin.read()
 
@@ -105,9 +101,7 @@ class Staff:
                     year = int(element.text or 0)
 
                 if name is not None and post is not None and year is not None:
-                    self.workers.append(
-                        Worker(name=name, post=post, year=year)
-                    )
+                    self.workers.append(Worker(name=name, post=post, year=year))
 
     def save(self, filename: str) -> None:
         root = ET.Element("workers")

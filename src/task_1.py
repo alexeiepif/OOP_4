@@ -17,6 +17,8 @@ def main() -> None:
         result = c + d
     except ValueError:
         result = f"{a}{b}"
+    except Exception as e:
+        result = "Непредвиденная ошибка: " + str(e)
     finally:
         print(f"Результат: {result}")
 

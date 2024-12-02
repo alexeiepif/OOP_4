@@ -12,13 +12,12 @@ from typing import Generator
 
 
 class Matrix:
-    names = ["rows", "columns"]
-
     def __init__(self, rows: int, columns: int, start: int, end: int) -> None:
         self.rows = rows
         self.columns = columns
         self.start = start
         self.end = end
+        self.matrix: list[list[int]] = []
 
     def generate_matrix(self) -> None:
         for name, value in self.items():
@@ -34,7 +33,7 @@ class Matrix:
         ]
 
     def items(self) -> Generator[tuple[str, int], None, None]:
-        for name in Matrix.names:
+        for name in ["rows", "columns"]:
             yield name, getattr(self, name)
 
     def __str__(self) -> str:

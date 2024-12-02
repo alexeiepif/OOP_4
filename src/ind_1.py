@@ -29,9 +29,7 @@ class CustomArgumentParser(argparse.ArgumentParser):
 # Класс пользовательского исключения в случае, если введенный маршрут
 # уже существует.
 class RouteExistsError(Exception):
-    def __init__(
-        self, route: "Route", message: str = "Route already exists"
-    ) -> None:
+    def __init__(self, route: "Route", message: str = "Route already exists") -> None:
         self.route = route
         self.message = message
         super(RouteExistsError, self).__init__(message)
@@ -43,9 +41,7 @@ class RouteExistsError(Exception):
 # Класс пользовательского исключения в случае, если для команд
 # вывода маршрутов использовался несуществующий файл
 class FileNotExistsError(Exception):
-    def __init__(
-        self, file_path: Path, message: str = "File not exists"
-    ) -> None:
+    def __init__(self, file_path: Path, message: str = "File not exists") -> None:
         self.file_path = file_path
         self.message = message
         super(FileNotExistsError, self).__init__(message)
@@ -89,9 +85,7 @@ class Routes:
         """
         if self.routes:
             table = []
-            line = "+-{}-+-{}-+-{}-+-{}-+".format(
-                "-" * 4, "-" * 30, "-" * 20, "-" * 16
-            )
+            line = "+-{}-+-{}-+-{}-+-{}-+".format("-" * 4, "-" * 30, "-" * 20, "-" * 16)
             table.append(line)
             table.append(
                 "| {:^4} | {:^30} | {:^20} | {:^16} |".format(
@@ -119,7 +113,7 @@ class Routes:
         """
         selected: List[Route] = []
         for route in self.routes:
-            if route.start == name_point or route.end == name_point:
+            if route.start == name_point.lower() or route.end == name_point.lower():
                 selected.append(route)
 
         return Routes(selected)
@@ -170,7 +164,7 @@ class Routes:
             self.routes.append(Route(**route))
 
 
-def main(command_line: str | None = None) -> None:
+def main(command_line: list[str] | None = None) -> None:
     """
     Главная функция программы.
     """
@@ -187,17 +181,11 @@ def main(command_line: str | None = None) -> None:
         action="store_true",
         help="Save the file in the user's home directory",
     )
-    file_parser.add_argument(
-        "filename", action="store", help="The data file name"
-    )
+    file_parser.add_argument("filename", action="store", help="The data file name")
     parser = CustomArgumentParser("routes")
-    parser.add_argument(
-        "--version", action="version", version="%(prog)s 0.2.0"
-    )
+    parser.add_argument("--version", action="version", version="%(prog)s 0.2.0")
     subparsers = parser.add_subparsers(dest="command")
-    add = subparsers.add_parser(
-        "add", parents=[file_parser], help="Add a new route"
-    )
+    add = subparsers.add_parser("add", parents=[file_parser], help="Add a new route")
     add.add_argument(
         "-s", "--start", action="store", required=True, help="The route start"
     )
@@ -213,9 +201,7 @@ def main(command_line: str | None = None) -> None:
         help="The number of route",
     )
 
-    _ = subparsers.add_parser(
-        "list", parents=[file_parser], help="Display all routes"
-    )
+    _ = subparsers.add_parser("list", parents=[file_parser], help="Display all routes")
 
     select = subparsers.add_parser(
         "select", parents=[file_parser], help="Select the routes"
@@ -248,9 +234,7 @@ def main(command_line: str | None = None) -> None:
             "необходим существующий файл",
         )
     else:
-        logging.info(
-            f"Файл {filepath} не найден, будет создан при сохранении."
-        )
+        logging.info(f"Файл {filepath} не найден, будет создан при сохранении.")
 
     match args.command.lower():
         case "add":
@@ -265,7 +249,7 @@ def main(command_line: str | None = None) -> None:
             logging.info("Выведены все маршруты")
 
         case "select":
-            name_point = args.point.lower()
+            name_point = args.point
             selected = routes.select(name_point)
             print(selected)
             if selected:
