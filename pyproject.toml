@@ -17,10 +17,15 @@ pre-commit = "^3.7.0"
 mypy = "^1.13.0"
 types-jsonschema = "^4.23.0.20240813"
 pytest = "^8.3.3"
+flake8-pyproject = "^1.2.3"
+setuptools = "^75.6.0"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.black]
 line-length = 88
@@ -35,6 +40,7 @@ max-line-length = 88
 extend-exclude = '__pycache__'
 
 [tool.isort]
+profile = "black"
 skip = '__pycache__'
 
 [tool.mypy]
